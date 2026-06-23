@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/liuxuanchen/Claude/)",
+      "Read(//Users/liuxuanchen/Claude/**)",
+      "Bash(git clone *)",
+      "Bash(curl -L -o repo.zip \"https://github.com/kid-commits/ielts-supervisor-system/archive/refs/heads/main.zip\")",
+      "Bash(unzip -o repo.zip)",
+      "Bash(rm -f repo.zip)",
+      "Bash(cp -r ielts-supervisor-system-main/* .)",
+      "Bash(cp ielts-supervisor-system-main/.gitignore .)",
+      "Bash(rm -rf ielts-supervisor-system-main)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(awk -F\"'\" '{print $2}')",
+      "WebFetch(domain:api.github.com)",
+      "Bash(curl -s \"https://api.github.com/repos/kid-commits/ielts-supervisor-system/git/trees/main?recursive=1\")",
+      "Bash(rm -rf src && curl -L -o repo.zip \"https://github.com/kid-commits/ielts-supervisor-system/archive/refs/heads/main.zip\" 2>&1 | tail -3)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/lib/taskGenerator.ts\" -o src/lib/taskGenerator.ts)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/lib/types.ts\" -o src/lib/types.ts)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/lib/utils.ts\" -o src/lib/utils.ts)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/page.tsx\" -o src/app/page.tsx)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/login/page.tsx\" -o src/app/login/page.tsx)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/settings/page.tsx\" -o src/app/settings/page.tsx)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/components/WeeklyChart.tsx\" -o src/app/components/WeeklyChart.tsx)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/globals.css\" -o src/app/globals.css)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/layout.tsx\" -o src/app/layout.tsx)",
+      "Bash(curl -s http://localhost:3000/login)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ],
+    "additionalDirectories": [
+      "/Users/liuxuanchen/Claude/ielts-tracker/src"
+    ]
+  }
+}
