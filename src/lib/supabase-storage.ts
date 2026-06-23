@@ -1,4 +1,4 @@
-import { supabase, getOrCreateUser } from './supabase'
+import { getSupabase, getOrCreateUser } from './supabase'
 import { AppState, GoalSettings, DayRecord, Task, FocusSession, StreakData } from './types'
 
 const defaultState: AppState = {
@@ -36,10 +36,10 @@ export async function loadState(): Promise<AppState> {
   try {
     // 并行加载所有数据
     const [goalsRes, tasksRes, focusRes, streakRes] = await Promise.all([
-      supabase.from('user_goals').select('*').eq('user_id', userId).single(),
-      supabase.from('daily_tasks').select('*').eq('user_id', userId),
-      supabase.from('focus_sessions').select('*').eq('user_id', userId),
-      supabase.from('streak_data').select('*').eq('user_id', userId).single(),
+      getSupabase().from('user_goals').select('*').eq('user_id', userId).single(),
+      getSupabase().from('daily_tasks').select('*').eq('user_id', userId),
+      getSupabase().from('focus_sessions').select('*').eq('user_id', userId),
+      getSupabase().from('streak_data').select('*').eq('user_id', userId).single(),
     ])
 
     // 检查是否有错误
@@ -180,7 +180,7 @@ export async function updateGoal(goal: GoalSettings): Promise<void> {
     return
   }
 
-  const { error } = await supabase
+  const { error } = await getSupabase()
     .from('user_goals')
     .upsert({
       user_id: userId,
@@ -215,7 +215,7 @@ export async function saveTasks(date: string, tasks: Task[]): Promise<void> {
   }
 
   // 先删除该日期的旧任务
-  const { error: deleteError } = await supabase
+  const { error: deleteError } = await getSupabase()
     .from('daily_tasks')
     .delete()
     .eq('user_id', userId)
@@ -239,7 +239,7 @@ export async function saveTasks(date: string, tasks: Task[]): Promise<void> {
       status: task.status,
     }))
 
-    const { error: insertError } = await supabase
+    const { error: insertError } = await getSupabase()
       .from('daily_tasks')
       .insert(tasksToInsert)
 
@@ -263,7 +263,7 @@ export async function updateTask(date: string, taskId: string, updates: Partial<
   if (updates.status !== undefined) updateData.status = updates.status
   if (updates.actualMinutes !== undefined) updateData.actual_minutes = updates.actualMinutes
 
-  await supabase
+  await getSupabase()
     .from('daily_tasks')
     .update(updateData)
     .eq('user_id', userId)
@@ -279,7 +279,7 @@ export async function addFocusSession(session: FocusSession): Promise<void> {
   const userId = await getOrCreateUser(licenseKey)
   if (!userId) return
 
-  await supabase
+  await getSupabase()
     .from('focus_sessions')
     .insert({
       user_id: userId,
@@ -300,7 +300,7 @@ export async function updateStreak(streak: StreakData): Promise<void> {
   const userId = await getOrCreateUser(licenseKey)
   if (!userId) return
 
-  await supabase
+  await getSupabase()
     .from('streak_data')
     .upsert({
       user_id: userId,
@@ -320,7 +320,7 @@ export async function getDayRecord(date: string): Promise<DayRecord | null> {
   const userId = await getOrCreateUser(licenseKey)
   if (!userId) return null
 
-  const { data: tasks } = await supabase
+  const { data: tasks } = await getSupabase()
     .from('daily_tasks')
     .select('*')
     .eq('user_id', userId)
@@ -328,7 +328,7 @@ export async function getDayRecord(date: string): Promise<DayRecord | null> {
 
   if (!tasks || tasks.length === 0) return null
 
-  const { data: focusSessions } = await supabase
+  const { data: focusSessions } = await getSupabase()
     .from('focus_sessions')
     .select('*')
     .eq('user_id', userId)
@@ -378,14 +378,14 @@ export async function getRecentDays(days: number): Promise<DayRecord[]> {
   }
 
   // 批量获取任务
-  const { data: tasks } = await supabase
+  const { data: tasks } = await getSupabase()
     .from('daily_tasks')
     .select('*')
     .eq('user_id', userId)
     .in('date', dates)
 
   // 批量获取专注记录
-  const { data: focusSessions } = await supabase
+  const { data: focusSessions } = await getSupabase()
     .from('focus_sessions')
     .select('*')
     .eq('user_id', userId)
@@ -431,9 +431,9 @@ export async function resetAll(): Promise<void> {
   if (!userId) return
 
   await Promise.all([
-    supabase.from('daily_tasks').delete().eq('user_id', userId),
-    supabase.from('focus_sessions').delete().eq('user_id', userId),
-    supabase.from('streak_data').delete().eq('user_id', userId),
-    supabase.from('user_goals').delete().eq('user_id', userId),
+    getSupabase().from('daily_tasks').delete().eq('user_id', userId),
+    getSupabase().from('focus_sessions').delete().eq('user_id', userId),
+    getSupabase().from('streak_data').delete().eq('user_id', userId),
+    getSupabase().from('user_goals').delete().eq('user_id', userId),
   ])
 }

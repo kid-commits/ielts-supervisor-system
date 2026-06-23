@@ -1,7 +1,7 @@
 // 试用密钥配置
 // 每个密钥首次使用后有72小时试用期
 
-import { supabase, getOrCreateUser } from './supabase'
+import { getSupabase, getOrCreateUser } from './supabase'
 
 export interface LicenseKey {
   key: string
@@ -36,7 +36,7 @@ export async function getLicenseInfo(key: string): Promise<LicenseKey | null> {
   const presetKey = Object.keys(LICENSE_KEYS).find(k => k.toUpperCase() === normalizedKey)
   if (!presetKey) return null
 
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from('users')
     .select('activated_at, expires_at')
     .eq('license_key', presetKey)
@@ -77,7 +77,7 @@ export async function activateLicenseKey(key: string): Promise<LicenseKey | null
   const now = new Date()
   const expiresAt = new Date(now.getTime() + TRIAL_HOURS * 60 * 60 * 1000)
 
-  const { error } = await supabase
+  const { error } = await getSupabase()
     .from('users')
     .update({
       activated_at: now.toISOString(),

@@ -31,7 +31,12 @@
       "Bash(curl -sL \"https://raw.githubusercontent.com/kid-commits/ielts-supervisor-system/main/src/app/layout.tsx\" -o src/app/layout.tsx)",
       "Bash(curl -s http://localhost:3000/login)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: 接入 Supabase 实现数据持久化 *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'fix: 修复 Supabase 初始化问题，使用延迟初始化避免构建阶段报错 *)"
     ],
     "additionalDirectories": [
       "/Users/liuxuanchen/Claude/ielts-tracker/src"
