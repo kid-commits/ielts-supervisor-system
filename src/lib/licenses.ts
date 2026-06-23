@@ -1,5 +1,5 @@
 // 试用密钥配置
-// 每个密钥首次使用后有72小时试用期
+// 每个密钥首次使用后有240小时（10天）试用期
 
 import { getSupabase, getOrCreateUser } from './supabase'
 
