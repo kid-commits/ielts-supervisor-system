@@ -38,12 +38,35 @@ export async function getLicenseInfo(key: string): Promise<LicenseKey | null> {
 
   const { data, error } = await getSupabase()
     .from('users')
-    .select('activated_at, expires_at')
+    .select('id, activated_at, expires_at')
     .eq('license_key', presetKey)
     .single()
 
   if (error || !data) {
     return LICENSE_KEYS[presetKey]
+  }
+
+  // 检查是否需要更新过期时间（从72小时更新到240小时）
+  if (data.activated_at && data.expires_at) {
+    const activatedAt = new Date(data.activated_at).getTime()
+    const expiresAt = new Date(data.expires_at).getTime()
+    const currentDuration = expiresAt - activatedAt
+    const expectedDuration = TRIAL_HOURS * 60 * 60 * 1000
+
+    // 如果当前过期时间小于240小时（说明是旧的72小时），自动更新
+    if (currentDuration < expectedDuration) {
+      const newExpiresAt = new Date(activatedAt + expectedDuration)
+      await getSupabase()
+        .from('users')
+        .update({ expires_at: newExpiresAt.toISOString() })
+        .eq('id', data.id)
+
+      return {
+        key: presetKey,
+        activatedAt: activatedAt,
+        expiresAt: newExpiresAt.getTime(),
+      }
+    }
   }
 
   return {
