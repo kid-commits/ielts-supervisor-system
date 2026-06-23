@@ -9,7 +9,7 @@ export interface LicenseKey {
   expiresAt: number | null
 }
 
-const TRIAL_HOURS = 72
+const TRIAL_HOURS = 240
 
 export const LICENSE_KEYS: Record<string, LicenseKey> = {
   'IELTS-TRIAL-2024-A1': { key: 'IELTS-TRIAL-2024-A1', activatedAt: null, expiresAt: null },

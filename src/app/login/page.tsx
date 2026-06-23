@@ -93,7 +93,7 @@ export default function LoginPage() {
 
           <div className="mt-4 pt-4 border-t border-gray-100">
             <p className="text-xs text-gray-400 text-center">
-              💡 每个密钥提供72小时试用期，首次使用开始计时
+              💡 每个密钥提供240小时（10天）试用期，首次使用开始计时
             </p>
           </div>
         </div>
